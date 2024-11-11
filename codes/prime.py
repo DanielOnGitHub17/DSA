@@ -1,5 +1,7 @@
 """Module about prime number algorithms"""
 import sys
+import time
+
 
 FIRST_THREE_PRIMES = (2, 3, 5)
 
@@ -25,6 +27,37 @@ def n_primes(n=3):
     return primes if n > 2 else primes[:n]
 
 
+def n_primes_optimized(n=3):
+    """Copy of 'n_primes' 
+     - optimized to stop at ceiling of square root
+    There's no more prime factors of the number 
+     after the squareoot.
+
+    Might be more explainable if done without a for loop :)
+    """
+
+    primes = list(FIRST_THREE_PRIMES)
+    num = primes[-1]
+
+    while len(primes) < n:
+        num += 1
+        sqrt_num = int(num**0.5) + 1
+        prime_index = 0
+        while primes[prime_index] <= sqrt_num:
+            if num % primes[prime_index] == 0:
+                break
+            prime_index += 1
+        else:
+            primes.append(num)
+
+    return primes if n > 2 else primes[:n]
+
+
 if __name__ == "__main__":
     n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else 0
-    print(n_primes(n_of_primes))
+    start_time = time.time()
+    n_primes(n_of_primes)
+    end_time = time.time()
+    print(end_time-start_time)
+    n_primes_optimized(n_of_primes)
+    print(time.time()-end_time)
