@@ -54,10 +54,11 @@ def n_primes_base(n=3):
 
 
 if __name__ == "__main__":
-    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else 0
+    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else int(input("Enter the number of primes: "))
     start_time = time.time()
-    n_primes_base(n_of_primes)
+    print(n_primes_base(n_of_primes))
     end_time = time.time()
     print(end_time-start_time)
-    n_primes(n_of_primes)
+    print(n_primes(n_of_primes))
     print(time.time()-end_time)
+    input("DONE")
