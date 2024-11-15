@@ -6,8 +6,19 @@ import time
 FIRST_THREE_PRIMES = (2, 3, 5)
 
 
+def n_primes_better(n=3):
+    """
+    :param n:
+    :return list[int]:
+
+    Copy of 'n_primes', will skip even numbers.
+    Future: Skip even numbers, multiples of 3, 5, 7...
+     - I believe that's already an algorithm :)
+    """
+
+
 def n_primes(n=3):
-    """Copy of 'n_primes' 
+    """Copy of 'n_primes_base'
      - optimized to stop at ceiling of square root
     There's no more prime factors of the number 
      after the squareoot.
@@ -54,10 +65,11 @@ def n_primes_base(n=3):
 
 
 if __name__ == "__main__":
-    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else 0
+    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else int(input("Enter the number of primes: "))
     start_time = time.time()
     n_primes_base(n_of_primes)
     end_time = time.time()
     print(end_time-start_time)
     n_primes(n_of_primes)
     print(time.time()-end_time)
+    input("DONE")
