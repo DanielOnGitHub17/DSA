@@ -6,6 +6,38 @@ import time
 FIRST_THREE_PRIMES = (2, 3, 5)
 
 
+def n_primes_by_six(n: int) -> list:
+    """Better version of 'n_primes_no_even' by incrementing by 6.
+    - 6k +/- 1 are the only numbers that are prime.
+    Essentially, O(n/6) is still better than O(n/2) :)
+    """
+
+    primes = list(FIRST_THREE_PRIMES[:2])  # First two primes, 2 and 3
+    counter = 0
+
+    while len(primes) < n:
+        counter += 6
+        num = counter-1
+        sqrt_num = int(counter**0.5) + 1
+        first_is_prime = True
+        second_is_prime = True
+
+        for _, p in enumerate(primes):
+            mod = num % p
+            if mod == 2:
+                second_is_prime = False
+            if mod == 0:
+                first_is_prime = False
+            if not (first_is_prime or second_is_prime) or p > sqrt_num:
+                break
+        if first_is_prime:
+            primes.append(num)
+        if second_is_prime:
+            primes.append(num+2)
+
+    return primes if n > 2 else primes[:n]
+
+
 def n_primes_no_even(n: int) -> list:
     """Copy of 'n_primes_sqrt', will skip even numbers.
     Future: Skip even numbers, multiples of 3, 5, 7...
