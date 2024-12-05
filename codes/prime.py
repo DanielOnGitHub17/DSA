@@ -17,23 +17,14 @@ def n_primes_by_six(n: int) -> list:
 
     while len(primes) < n:
         counter += 6
-        num = counter-1
-        sqrt_num = int(counter**0.5) + 1
-        first_is_prime = True
-        second_is_prime = True
-
-        for _, p in enumerate(primes):
-            mod = num % p
-            if mod == 2:
-                second_is_prime = False
-            if mod == 0:
-                first_is_prime = False
-            if not (first_is_prime or second_is_prime) or p > sqrt_num:
-                break
-        if first_is_prime:
-            primes.append(num)
-        if second_is_prime:
-            primes.append(num+2)
+        for num in (counter-1, counter+1):
+            sqrt_num = int(num**0.5) + 1
+            for _, p in enumerate(primes):
+                if num % p == 0:
+                    break
+                if p > sqrt_num:
+                    primes.append(num)
+                    break
 
     return primes if n > 2 else primes[:n]
 
