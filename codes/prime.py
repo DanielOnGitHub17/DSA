@@ -20,13 +20,12 @@ def n_primes_no_even(n=3):
     while len(primes) < n:
         num += 2
         sqrt_num = int(num**0.5) + 1
-        prime_index = 0
-        while primes[prime_index] <= sqrt_num:
-            if num % primes[prime_index] == 0:
+        for _, p in enumerate(primes):
+            if num % p == 0:
                 break
-            prime_index += 1
-        else:
-            primes.append(num)
+            if p > sqrt_num:
+                primes.append(num)
+                break
 
     return primes if n > 2 else primes[:n]
 
