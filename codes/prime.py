@@ -6,18 +6,36 @@ import time
 FIRST_THREE_PRIMES = (2, 3, 5)
 
 
-def n_primes_better(n=3):
+def n_primes_no_even(n=3):
     """
     :param n:
     :return list[int]:
 
-    Copy of 'n_primes', will skip even numbers.
+    Copy of 'n_primes_sqrt', will skip even numbers.
     Future: Skip even numbers, multiples of 3, 5, 7...
      - I believe that's already an algorithm :)
+    What is in my mind of 'skipping' multiples is probably Erostosthenes' Sieve.
+    It's not to skip, but to mark as composite.
     """
 
+    primes = list(FIRST_THREE_PRIMES)
+    num = primes[-1]
 
-def n_primes(n=3):
+    while len(primes) < n:
+        num += 2
+        sqrt_num = int(num**0.5) + 1
+        prime_index = 0
+        while primes[prime_index] <= sqrt_num:
+            if num % primes[prime_index] == 0:
+                break
+            prime_index += 1
+        else:
+            primes.append(num)
+
+    return primes if n > 2 else primes[:n]
+
+
+def n_primes_sqrt(n=3):
     """Copy of 'n_primes_base'
      - optimized to stop at ceiling of square root
     There's no more prime factors of the number 
@@ -64,12 +82,13 @@ def n_primes_base(n=3):
     return primes if n > 2 else primes[:n]
 
 
+
 if __name__ == "__main__":
     n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else int(input("Enter the number of primes: "))
     start_time = time.time()
     n_primes_base(n_of_primes)
     end_time = time.time()
     print(end_time-start_time)
-    n_primes(n_of_primes)
+    n_primes_sqrt(n_of_primes)
     print(time.time()-end_time)
     input("DONE")
