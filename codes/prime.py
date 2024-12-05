@@ -1,9 +1,37 @@
-"""Module about prime number algorithms"""
+"""Module on prime number algorithms
+Try n=10000, and erostothenes starts doing well.
+"""
+import math
 import sys
 import time
 
 
 FIRST_THREE_PRIMES = (2, 3, 5)
+
+def n_primes_erostosthenes(n: int) -> list:
+    """Erostosthenes' Sieve algorithm to generate n primes.
+    - Eliminate multiples of each prime number.
+    I get the approximate nth prime number by using the formula: n(ln(n) + ln(ln(n)))
+    Then I slice the result if it's too much
+    """
+
+    # Base case. Log(log) will fail.
+    if n == 1:
+        return [2]
+
+    # add ten to cater for n=2,3,4
+    nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))+10
+    numbers = [*range(2, nth_prime_approx+1)]
+    n_numbers = len(numbers)
+
+    for maker_index in range(n_numbers):
+        prime = numbers[maker_index]
+        if not prime:
+            continue
+        for composite_index in range(maker_index+prime, n_numbers, prime):
+            numbers[composite_index] = 0
+
+    return [p for p in numbers if p][:n]  # offset might be much
 
 
 def n_primes_by_six(n: int) -> list:
@@ -13,20 +41,21 @@ def n_primes_by_six(n: int) -> list:
     """
 
     primes = list(FIRST_THREE_PRIMES[:2])  # First two primes, 2 and 3
-    counter = 0
+    counter = 6
 
     while len(primes) < n:
-        counter += 6
+        sqrt_num = int(counter**0.5) + 1
+        is_prime = True
         for num in (counter-1, counter+1):
-            sqrt_num = int(num**0.5) + 1
             for _, p in enumerate(primes):
-                if num % p == 0:
+                if num % p == 0 or p > sqrt_num:
+                    is_prime = p > sqrt_num  # It broke because no factors
                     break
-                if p > sqrt_num:
-                    primes.append(num)
-                    break
+            if is_prime:
+                primes.append(num)
+        counter += 6
 
-    return primes if n > 2 else primes[:n]
+    return primes[:n]
 
 
 def n_primes_no_even(n: int) -> list:
@@ -99,13 +128,22 @@ def n_primes_base(n: int) -> list:
     return primes if n > 2 else primes[:n]
 
 
+prime_functions = [
+    n_primes_base,
+    n_primes_sqrt,
+    n_primes_no_even,
+    n_primes_by_six,
+    n_primes_erostosthenes,
+]
+
 
 if __name__ == "__main__":
-    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else int(input("Enter the number of primes: "))
-    start_time = time.time()
-    n_primes_base(n_of_primes)
-    end_time = time.time()
-    print(end_time-start_time)
-    n_primes_sqrt(n_of_primes)
-    print(time.time()-end_time)
-    input("DONE")
+    n_of_primes = int(sys.argv[1]) if len(sys.argv) == 2 else\
+          int(input("Enter the number of primes: "))
+    for n_primes in prime_functions:
+        start_time = time.time()
+        primes_nos = n_primes(n_of_primes)
+        end_time = time.time()
+        # print(f"{(n_primes.__name__+f'({n_of_primes}):').ljust(30)} {primes_nos}")
+        print(f"{(n_primes.__name__+' finished in').ljust(30)} {end_time-start_time}")
+    input("\nDONE")
