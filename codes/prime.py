@@ -9,6 +9,36 @@ import time
 FIRST_THREE_PRIMES = (2, 3, 5)
 
 
+def n_primes_euler(n: int) -> list:
+    """Optimized Erostosthenes' Sieve algorithm to generate n primes.
+    - Marks a number composite only once.
+    - Keeps a running product of primes and marks the multiples of that product
+    - Issue: the product becomes large, fast. Adding large numbers might be time-consuming...
+    """
+
+    first_five_primes = [2, 3, 5, 7, 11]
+    # Base cases. n=1, Log(log) will fail. n<6, formula fails.
+    if n < 6:
+        return first_five_primes[:n]
+
+    nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))
+    numbers = [*range(2, nth_prime_approx+1)]
+    n_numbers = len(numbers)
+    marker = 1
+
+    count = 0
+    for maker_index in range(n_numbers):
+        prime = numbers[maker_index]
+        if not prime:
+            continue
+        marker *= prime
+        print(prime)
+        for composite_index in range(maker_index+marker, n_numbers, marker):
+            numbers[composite_index] = 0
+            count += 1
+    print("euler", count)
+    return [p for p in numbers if p][:n]  # offset might be much
+
 
 def n_primes_erostosthenes(n: int) -> list:
     """Erostosthenes' Sieve algorithm to generate n primes.
@@ -25,13 +55,15 @@ def n_primes_erostosthenes(n: int) -> list:
     nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))
     numbers = [*range(2, nth_prime_approx+1)]
     n_numbers = len(numbers)
-
+    count = 0
     for maker_index in range(n_numbers):
         prime = numbers[maker_index]
-        if not prime:
+        if prime == 0:
             continue
         for composite_index in range(maker_index+prime, n_numbers, prime):
             numbers[composite_index] = 0
+            count += 1
+    print("euler", count)
 
     return [p for p in numbers if p][:n]  # offset might be much
 
@@ -131,10 +163,10 @@ def n_primes_base(n: int) -> list:
 
 
 prime_functions = [
-    # n_primes_base,
-    # n_primes_sqrt,
-    # n_primes_no_even,
-    # n_primes_by_six,
+    n_primes_base,
+    n_primes_sqrt,
+    n_primes_no_even,
+    n_primes_by_six,
     n_primes_erostosthenes,
     # n_primes_euler,
 ]
