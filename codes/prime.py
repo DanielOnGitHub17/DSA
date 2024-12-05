@@ -8,6 +8,7 @@ import time
 
 FIRST_THREE_PRIMES = (2, 3, 5)
 
+
 def n_primes_erostosthenes(n: int) -> list:
     """Erostosthenes' Sieve algorithm to generate n primes.
     - Eliminate multiples of each prime number.
@@ -15,12 +16,11 @@ def n_primes_erostosthenes(n: int) -> list:
     Then I slice the result if it's too much
     """
 
-    # Base case. Log(log) will fail.
-    if n == 1:
-        return [2]
+    # Base cases. n=1, Log(log) will fail. n=2, formula fails.
+    if n < 4:
+        return list(FIRST_THREE_PRIMES)[:n]
 
-    # add ten to cater for n=2,3,4
-    nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))+10
+    nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))
     numbers = [*range(2, nth_prime_approx+1)]
     n_numbers = len(numbers)
 
@@ -129,11 +129,12 @@ def n_primes_base(n: int) -> list:
 
 
 prime_functions = [
-    n_primes_base,
-    n_primes_sqrt,
-    n_primes_no_even,
-    n_primes_by_six,
+    # n_primes_base,
+    # n_primes_sqrt,
+    # n_primes_no_even,
+    # n_primes_by_six,
     n_primes_erostosthenes,
+    # n_primes_euler,
 ]
 
 
@@ -144,6 +145,6 @@ if __name__ == "__main__":
         start_time = time.time()
         primes_nos = n_primes(n_of_primes)
         end_time = time.time()
-        # print(f"{(n_primes.__name__+f'({n_of_primes}):').ljust(30)} {primes_nos}")
+        print(f"{(n_primes.__name__+f'({n_of_primes}):').ljust(30)} {primes_nos}")
         print(f"{(n_primes.__name__+' finished in').ljust(30)} {end_time-start_time}")
     input("\nDONE")
