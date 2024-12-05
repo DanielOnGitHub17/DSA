@@ -9,6 +9,7 @@ import time
 FIRST_THREE_PRIMES = (2, 3, 5)
 
 
+
 def n_primes_erostosthenes(n: int) -> list:
     """Erostosthenes' Sieve algorithm to generate n primes.
     - Eliminate multiples of each prime number.
@@ -16,9 +17,10 @@ def n_primes_erostosthenes(n: int) -> list:
     Then I slice the result if it's too much
     """
 
-    # Base cases. n=1, Log(log) will fail. n=2, formula fails.
-    if n < 4:
-        return list(FIRST_THREE_PRIMES)[:n]
+    first_five_primes = [2, 3, 5, 7, 11]
+    # Base cases. n=1, Log(log) will fail. n<6, formula fails.
+    if n < 6:
+        return first_five_primes[:n]
 
     nth_prime_approx = int(n * (math.log(n) + math.log(math.log(n))))
     numbers = [*range(2, nth_prime_approx+1)]
