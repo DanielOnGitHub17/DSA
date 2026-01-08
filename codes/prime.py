@@ -81,7 +81,7 @@ def n_primes_by_six(n: int) -> list:
         sqrt_num = int(counter**0.5) + 1
         is_prime = True
         for num in (counter-1, counter+1):
-            for _, p in enumerate(primes):
+            for p in primes:
                 if num % p == 0 or p > sqrt_num:
                     is_prime = p > sqrt_num  # It broke because no factors
                     break
@@ -106,7 +106,7 @@ def n_primes_no_even(n: int) -> list:
     while len(primes) < n:
         num += 2
         sqrt_num = int(num**0.5) + 1
-        for _, p in enumerate(primes):
+        for p in primes:
             if num % p == 0:
                 break
             if p > sqrt_num:
@@ -131,7 +131,7 @@ def n_primes_sqrt(n: int) -> list:
     while len(primes) < n:
         num += 1
         sqrt_num = int(num**0.5) + 1
-        for _, p in enumerate(primes):
+        for p in primes:
             if num % p == 0:
                 break
             if p > sqrt_num:
